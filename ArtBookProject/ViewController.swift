@@ -13,6 +13,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: UITableView!
     var nameArray = [String]()
     var idArray = [UUID]()
+    var selectedPainting : String?
+    var selectedPaintingId : UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,20 +37,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paintings")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Painting")
         fetchRequest.returnsObjectsAsFaults = false
         do {
             let results = try context.fetch(fetchRequest)
-            
-            for result in results as! [NSManagedObject]{
-                if let name = result.value(forKey: "name") as? String {
-                    self.nameArray.append(name)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject]{
+                    if let name = result.value(forKey: "name") as? String {
+                        self.nameArray.append(name)
+                    }
+                    if let id = result.value(forKey: "id") as? UUID {
+                        self.idArray.append(id)
+                    }
+                    self.tableView.reloadData()
+                    
                 }
-                if let id = result.value(forKey: "id") as? UUID {
-                    self.idArray.append(id)
-                }
-                self.tableView.reloadData()
-                
             }
         } catch {
             print(error)
@@ -68,6 +71,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @objc func addButtonClicked(){
+        performSegue(withIdentifier: "toDetailsVC", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toDetailsVC" {
+            let destinationVC = segue.destination as! DetailsViewController
+            destinationVC.chosenPaintingId = selectedPaintingId
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedPainting = nameArray[indexPath.row]
+        selectedPaintingId = idArray[indexPath.row]
         performSegue(withIdentifier: "toDetailsVC", sender: nil)
     }
 }
