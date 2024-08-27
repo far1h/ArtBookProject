@@ -47,7 +47,7 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
             try context.save() 
             print("success")
         } catch {
-            print("error")
+            print(error)
         }
     }
     
