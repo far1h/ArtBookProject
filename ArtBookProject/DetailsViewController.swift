@@ -49,6 +49,8 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
         } catch {
             print(error)
         }
+        self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: NSNotification.Name("newData"), object: nil)
     }
     
     @objc func hideKeyboard(){
