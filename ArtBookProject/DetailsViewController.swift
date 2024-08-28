@@ -47,7 +47,7 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
                     }
                 }
             } catch  {
-                print(error)
+                print("error")
             }
         } else {
             nameText.text = ""
@@ -84,7 +84,7 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
             try context.save() 
             print("success")
         } catch {
-            print(error)
+            print("error")
         }
         self.navigationController?.popViewController(animated: true)
         NotificationCenter.default.post(name: NSNotification.Name("newData"), object: nil)
