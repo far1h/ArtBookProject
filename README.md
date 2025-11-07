@@ -1,0 +1,37 @@
+#  Implement Core Data and Table View in UIKit
+
+These were the steps taken to implement Create, Read, and Delete operations using Core Data and display the data in a UITableView in a UIKit-based iOS application, using Notification Center for communication between view controllers, UIImagePickerController for image selection, Gesture Recognizers for user interactions:
+- Set Core Data to true when creating a new project in Xcode.
+- Create a new Entity in the .xcdatamodeld file, for example, "Item" with an attribute "name" of type String.
+- Add a UITableView to your ViewController in the storyboard and create an IBOutlet for it.
+- Set constraints for the UITableView to fill the view.
+- Add another ViewController with a UIImageView, UITextFields and a UIButton for adding and viewing items.
+- Create a new Swift file for the second ViewController and set its class in the storyboard.
+- Create IBOutlets for the UIImageView and UITextFields, and an IBAction for the UIButton in the second ViewController.
+- If errors occur when setting up IBOutlets or IBActions, clean the build folder (Shift + Command + K) and rebuild the project. OR delete the IBOutlet/IBAction and recreate it. OR edit storyboard as source code and fix the issue by adding Custom Module and Custom Module Provider.
+- Set constraints for the UI elements in the second ViewController.
+- Add gesture recognizer to dismiss the keyboard when tapping outside the text fields in the second ViewController.
+- Add Gesture Recognizer to the UIImageView to allow image selection from the photo library.
+- Set picker's properties to allow editing and set the source type to photo library.
+- Present the UIImagePickerController when the UIImageView is tapped.
+- Add protocol conformance to UIImagePickerControllerDelegate and UINavigationControllerDelegate in the second ViewController.
+- Implement the imagePickerController(_:didFinishPickingMediaWithInfo:) method to set the selected image to the UIImageView using info[.originalImage].
+- Dismiss the picker after selecting an image.
+- Add necessary privacy description (NSPhotoLibraryUsageDescription) in Info.plist for accessing the photo library.
+- In save button action, create a new Item entity, set its attributes from the text fields and image, and save the context.
+- Dismiss the second ViewController after saving the item.
+- Send a notification or use delegation to inform the first ViewController to reload data.
+- Listen for the notification or implement the delegate method in the first ViewController's viewWillAppear to fetch data from Core Data and reload the table view. 
+- Embed the first ViewController in a UINavigationController.
+- Added button to the navigation bar to present the second ViewController modally for adding new items.
+- Set the ViewController as the table view's data source and delegate.
+- Implement the required UITableViewDataSource methods: numberOfRowsInSection and cellForRow
+- Fetch data from Core Data in viewDidLoad and reload the table view.
+- Empty the array holding fetched items before fetching new data to avoid duplicates. 
+- Fetch data using NSFetchRequest for the Item entity and populate an array to hold the fetched items.
+- In cellForRowAt, configure the cell with data from the fetched items array.
+- In didSelectRowAt, present the second ViewController with the selected item's data for viewing or editing.
+- When presenting the second ViewController for editing, use NSPredicate to fetch the specific item based on a unique attribute (like name or an ID).
+- Populate the text fields and image view in the second ViewController with the selected item's data when editing.
+- Add functionality to delete items from Core Data and update the table view accordingly on first ViewController using tableView(_:commit:forRowAt:) method in the first ViewController using context.delete(item), itemArray.remove(at: indexPath.row), saveContext(), and tableView.reloadData(). 
+- If item is passed to the second ViewController, disable the save button to prevent adding duplicates.
